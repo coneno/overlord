@@ -394,19 +394,22 @@ class RenderPopover extends RenderShiftedBox {
     late double arrowCenter;
 
     final localFocalPoint = focalPoint.globalOffset != null ? globalToLocal(focalPoint.globalOffset!) : null;
-    if (localFocalPoint != null) {
-      // We have a menu focal point. Orient the arrow towards that
-      // focal point.
-      direction = _computeArrowDirection(Offset.zero & size, localFocalPoint);
-      arrowCenter = _computeArrowCenter(direction, localFocalPoint);
-    } else {
-      // We don't have a menu focal point. Perhaps this is a moment just
-      // before, or just after a focal point becomes available. Until then,
-      // render with the arrow pointing down from the center of the toolbar,
-      // as an arbitrary arrow position.
-      direction = ArrowDirection.down;
-      arrowCenter = 0.5;
-    }
+    // if (localFocalPoint != null) {
+    //   // We have a menu focal point. Orient the arrow towards that
+    //   // focal point.
+    //   direction = _computeArrowDirection(Offset.zero & size, localFocalPoint);
+    //   arrowCenter = _computeArrowCenter(direction, localFocalPoint);
+    // } else {
+    //   // We don't have a menu focal point. Perhaps this is a moment just
+    //   // before, or just after a focal point becomes available. Until then,
+    //   // render with the arrow pointing down from the center of the toolbar,
+    //   // as an arbitrary arrow position.
+    //   direction = ArrowDirection.down;
+    //   arrowCenter = 0.5;
+    // }
+
+    direction = ArrowDirection.up;
+    arrowCenter = size.width / 2;
 
     // Cache the background shape path, so it can be used in hit-testing.
     _backgroundShapePath = _createBackgroundShapePath(direction, arrowCenter);
