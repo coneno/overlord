@@ -14,6 +14,7 @@ class CupertinoPopoverMenu extends SingleChildRenderObjectWidget {
     super.key,
     required this.focalPoint,
     this.borderRadius = 12.0,
+    this.arrowDirection = ArrowDirection.up,
     this.arrowBaseWidth = 18.0,
     this.arrowLength = 12.0,
     this.allowHorizontalArrow = true,
@@ -28,6 +29,8 @@ class CupertinoPopoverMenu extends SingleChildRenderObjectWidget {
 
   /// Where the toolbar arrow should point.
   final MenuFocalPoint focalPoint;
+
+  final ArrowDirection arrowDirection;
 
   /// Indicates whether or not the arrow can point to a horizontal direction.
   ///
@@ -105,6 +108,7 @@ class CupertinoPopoverMenu extends SingleChildRenderObjectWidget {
       shadowColor: shadowColor,
       focalPoint: focalPoint,
       allowHorizontalArrow: allowHorizontalArrow,
+      arrowDirection: arrowDirection,
       extendAndClipContentOverArrow: extendAndClipContentOverArrow,
       showDebugPaint: showDebugPaint,
     );
@@ -124,6 +128,7 @@ class CupertinoPopoverMenu extends SingleChildRenderObjectWidget {
       ..elevation = elevation
       ..shadowColor = shadowColor
       ..allowHorizontalArrow = allowHorizontalArrow
+      ..arrowDirection = arrowDirection
       ..extendAndClipContentOverArrow = extendAndClipContentOverArrow
       ..showDebugPaint = showDebugPaint;
   }
@@ -139,7 +144,8 @@ class RenderPopover extends RenderShiftedBox {
     required Color shadowColor,
     required MenuFocalPoint focalPoint,
     required Size screenSize,
-    bool allowHorizontalArrow = true,
+    required bool allowHorizontalArrow,
+    ArrowDirection arrowDirection = ArrowDirection.up,
     bool extendAndClipContentOverArrow = false,
     EdgeInsets? padding,
     bool showDebugPaint = false,
@@ -155,6 +161,7 @@ class RenderPopover extends RenderShiftedBox {
         _backgroundPaint = Paint()..color = backgroundColor,
         _focalPoint = focalPoint,
         _allowHorizontalArrow = allowHorizontalArrow,
+        _arrowDirection = arrowDirection,
         _extendAndClipContentOverArrow = extendAndClipContentOverArrow,
         _showDebugPaint = showDebugPaint,
         super(child) {
@@ -277,6 +284,19 @@ class RenderPopover extends RenderShiftedBox {
     markNeedsLayout();
   }
 
+  ArrowDirection get arrowDirection => _arrowDirection;
+  ArrowDirection _arrowDirection;
+  set arrowDirection(ArrowDirection value) {
+    if (value == _arrowDirection) {
+      return;
+    }
+
+    _arrowDirection = value;
+    _updateReservedSizeForArrow();
+    _updateShapeOffset();
+    markNeedsLayout();
+  }
+
   bool get extendAndClipContentOverArrow => _extendAndClipContentOverArrow;
   bool _extendAndClipContentOverArrow;
   set extendAndClipContentOverArrow(bool value) {
@@ -390,8 +410,7 @@ class RenderPopover extends RenderShiftedBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    late ArrowDirection direction;
-    late double arrowCenter;
+    late double arrowCenter = size.width / 2;
 
     final localFocalPoint = focalPoint.globalOffset != null ? globalToLocal(focalPoint.globalOffset!) : null;
     // if (localFocalPoint != null) {
@@ -408,11 +427,8 @@ class RenderPopover extends RenderShiftedBox {
     //   arrowCenter = 0.5;
     // }
 
-    direction = ArrowDirection.up;
-    arrowCenter = size.width / 2;
-
     // Cache the background shape path, so it can be used in hit-testing.
-    _backgroundShapePath = _createBackgroundShapePath(direction, arrowCenter);
+    _backgroundShapePath = _createBackgroundShapePath(arrowDirection, arrowCenter);
 
     if (elevation != 0.0) {
       final isMenuTranslucent = _backgroundColor.alpha != 0xFF;
