@@ -541,33 +541,33 @@ class RenderPopover extends RenderShiftedBox {
   /// the arrow points left or right.
   ///
   /// If [allowHorizontalArrow] is `false`, the arrow only points up or down.
-  ArrowDirection _computeArrowDirection(Rect menuRect, Offset globalFocalPoint) {
-    final isFocalPointInsideHorizontalBounds =
-        globalFocalPoint.dx >= menuRect.left && globalFocalPoint.dx <= menuRect.right;
+  // ArrowDirection _computeArrowDirection(Rect menuRect, Offset globalFocalPoint) {
+  //   final isFocalPointInsideHorizontalBounds =
+  //       globalFocalPoint.dx >= menuRect.left && globalFocalPoint.dx <= menuRect.right;
 
-    if (isFocalPointInsideHorizontalBounds || !allowHorizontalArrow) {
-      if (globalFocalPoint.dy < menuRect.top) {
-        return ArrowDirection.up;
-      }
-      return ArrowDirection.down;
-    } else {
-      if (globalFocalPoint.dx < menuRect.left) {
-        return ArrowDirection.left;
-      }
-      return ArrowDirection.right;
-    }
-  }
+  //   if (isFocalPointInsideHorizontalBounds || !allowHorizontalArrow) {
+  //     if (globalFocalPoint.dy < menuRect.top) {
+  //       return ArrowDirection.up;
+  //     }
+  //     return ArrowDirection.down;
+  //   } else {
+  //     if (globalFocalPoint.dx < menuRect.left) {
+  //       return ArrowDirection.left;
+  //     }
+  //     return ArrowDirection.right;
+  //   }
+  // }
 
   /// Computes the center point of the arrow.
   ///
   /// This point can be on the x or y axis, depending on the [direction].
-  double _computeArrowCenter(ArrowDirection direction, Offset focalPoint) {
-    final desiredFocalPoint = _isArrowVertical(direction) //
-        ? focalPoint.dx
-        : focalPoint.dy;
+  // double _computeArrowCenter(ArrowDirection direction, Offset focalPoint) {
+  //   final desiredFocalPoint = _isArrowVertical(direction) //
+  //       ? focalPoint.dx
+  //       : focalPoint.dy;
 
-    return _constrainFocalPoint(desiredFocalPoint, direction);
-  }
+  //   return _constrainFocalPoint(desiredFocalPoint, direction);
+  // }
 
   /// Computes the (x, y) offset used to paint the menu content inside the popover.
   Offset _computeContentOffset() {
@@ -627,9 +627,9 @@ class RenderPopover extends RenderShiftedBox {
       (size.height - borderRadius - arrowLength - (arrowBaseWidth / 2));
 
   /// Constrain the focal point to be inside the menu bounds, respecting the minimum and maximum focal points.
-  double _constrainFocalPoint(double desiredFocalPoint, ArrowDirection arrowDirection) {
-    return min(max(desiredFocalPoint, _minArrowFocalPoint(arrowDirection)), _maxArrowFocalPoint(arrowDirection));
-  }
+  // double _constrainFocalPoint(double desiredFocalPoint, ArrowDirection arrowDirection) {
+  //   return min(max(desiredFocalPoint, _minArrowFocalPoint(arrowDirection)), _maxArrowFocalPoint(arrowDirection));
+  // }
 }
 
 /// Direction where a arrow points to.
